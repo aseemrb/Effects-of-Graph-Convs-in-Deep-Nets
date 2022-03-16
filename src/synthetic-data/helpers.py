@@ -68,6 +68,7 @@ class XCSBM:
 class MLP(torch.nn.Module):
     def __init__(self, n_layers, n_features, channels=None):
         super().__init__()
+        self.n_layers = n_layers
         self.activations = [nn.ReLU()]*n_layers
         self.activations[-1] = nn.Sigmoid()
         # Set default number of channels for every layer if not specified.
@@ -101,6 +102,7 @@ class MLP(torch.nn.Module):
 class GCN(torch.nn.Module):
     def __init__(self, n_layers, n_features, convolutions, channels=None):
         super().__init__()
+        self.n_layers = n_layers
         self.num_nodes = None
         self.norm = None
         self.convs = convolutions
@@ -171,13 +173,21 @@ def train_model(model, data, loss_fn=nn.BCELoss(), epochs=200, min_loss=1e-3, id
         epoch += 1
 
 # Set parameters to be the ansatz.
-def set_params(net, data_model, n_layers):
+def set_params(net, data_model, n_layers, device):
     params = [param for param in net.parameters()]
     u = data_model.normed_uv[0]
     v = data_model.normed_uv[1]
-    params[0].data = torch.stack([u, -u, v, -v], dim=0)
+    params[0].data = torch.stack([u, -u, v, -v], dim=0).to(device)
     if n_layers == 2:
-        params[1].data = torch.tensor([[-1., -1., 1., 1.]])
+        params[1].data = torch.tensor([[-1., -1., 1., 1.]]).to(device)
     elif n_layers == 3:
-        params[1].data = torch.tensor([[-1., -1., 1., 1.],[1., 1., -1., -1.]])
-        params[2].data = torch.tensor([[1., -1.]])
+        params[1].data = torch.tensor([[-1., -1., 1., 1.],[1., 1., -1., -1.]]).to(device)
+        params[2].data = torch.tensor([[1., -1.]]).to(device)
+
+# Compute prediction accuracy.
+def accuracy(y_hat, y):
+    assert y_hat.size(0) == y.size(0)
+    assert y.size(0) > 0
+    pred = (y_hat>=0.5).long()
+    incorrect = torch.sum(torch.abs(pred-y))
+    return 1. - (incorrect / y.size(0))
