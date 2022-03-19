@@ -155,6 +155,7 @@ class GCN(torch.nn.Module):
             x_ = self.norm*x_
         return x_
 
+<<<<<<< HEAD
 def train_model(model, data, loss_fn=nn.BCELoss(), lr=0.001, epochs=200, eps=1e-5, logs=None):
     optimizer = torch.optim.Adam(model.parameters(), lr=lr)
     model.train()
@@ -179,6 +180,30 @@ def set_params(net, data_model, n_layers, device, R=1):
     params = [param for param in net.parameters()]
     u = R*data_model.normed_uv[0]
     v = R*data_model.normed_uv[1]
+=======
+def train_model(model, data, loss_fn=nn.BCELoss(), epochs=200, min_loss=1e-3, idx=None):
+    optimizer = torch.optim.Adam(model.parameters(), lr=0.005)
+    model.train()
+    epoch = 0
+    print_freq = epochs//10
+    while epoch < epochs:
+        optimizer.zero_grad(set_to_none=True)
+        out = model(data)
+        loss = loss_fn(out, data.y.float())
+        loss.backward()
+        optimizer.step()
+        if epoch % print_freq == 0 and idx is not None:
+            print('\rIdx:', idx, ', Loss:', loss.item(), end='')
+        if loss.item() < min_loss:
+            break
+        epoch += 1
+
+# Set parameters to be the ansatz.
+def set_params(net, data_model, n_layers, device):
+    params = [param for param in net.parameters()]
+    u = data_model.normed_uv[0]
+    v = data_model.normed_uv[1]
+>>>>>>> 102ffc02b2c24fe0de1705bc340d472557cb4528
     params[0].data = torch.stack([u, -u, v, -v], dim=0).to(device)
     if n_layers == 2:
         params[1].data = torch.tensor([[-1., -1., 1., 1.]]).to(device)
