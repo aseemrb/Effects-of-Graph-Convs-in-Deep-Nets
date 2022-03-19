@@ -164,7 +164,7 @@ def train_model(model, data, loss_fn=nn.BCELoss(), lr=0.001, epochs=200, eps=1e-
     while epoch < epochs:
         optimizer.zero_grad(set_to_none=True)
         out = model(data)
-        loss = loss_fn(out[data.train_mask], data.y_[data.train_mask].float())
+        loss = loss_fn(out, data.y.float())
         loss.backward()
         optimizer.step()
         if logs is not None and epoch % print_freq == 0:

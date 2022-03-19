@@ -155,11 +155,11 @@ class GCN(torch.nn.Module):
             x_ = self.norm*x_
         return x_
 
-def train_model(model, data, loss_fn=nn.BCELoss(), lr=0.001, epochs=200, eps=1e-5, logs=None):
+def train_model(model, data, loss_fn=nn.BCELoss(), lr=0.001, epochs=200, eps=1e-4, logs=None):
     optimizer = torch.optim.Adam(model.parameters(), lr=lr)
     model.train()
     epoch = 0
-    print_freq = epochs//10
+    print_freq = 20
     prev_loss = 0
     while epoch < epochs:
         optimizer.zero_grad(set_to_none=True)
