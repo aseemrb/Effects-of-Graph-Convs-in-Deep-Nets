@@ -1,1 +1,6 @@
-# Graph-Conv-Deep-Nets
+# Effects of Graph Convolutions in Deep Networks
+This repository contains the source code for all the experiments in our paper about the capacity of graph convolutions in deep networks.
+A preprint can be found on arXiv: [https://arxiv.org/abs/2204.09297](https://arxiv.org/abs/2204.09297).
+
+### Abstract
+Graph Convolutional Networks (GCNs) are one of the most popular architectures that are used to solve classification problems accompanied by graphical information. We present a rigorous theoretical understanding of the effects of graph convolutions in multi-layer networks. We study these effects through the node classification problem of a non-linearly separable Gaussian mixture model coupled with a stochastic block model. First, we show that a single graph convolution expands the regime of the distance between the means where multi-layer networks can classify the data by a factor of at least 1/(E deg)^1/4, where E deg denotes the expected degree of a node. Second, we show that with a slightly stronger graph density, two graph convolutions improve this factor to at least 1/n^1/4, where n is the number of nodes in the graph. Finally, we provide both theoretical and empirical insights into the performance of graph convolutions placed in different combinations among the layers of a network, concluding that the performance is mutually similar for all combinations of the placement. We present extensive experiments on both synthetic and real-world data that illustrate our results.
