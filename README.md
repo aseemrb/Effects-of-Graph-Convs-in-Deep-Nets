@@ -1,5 +1,5 @@
-# Effects of Graph Convolutions in Deep Networks
-This repository contains the source code for all the experiments in our paper about the capacity of graph convolutions in deep networks.
+# Effects of Graph Convolutions in Multi-layer Networks
+This repository contains the source code for all the experiments in our paper about the capacity of graph convolutions in multi-layer networks.
 A preprint can be found on arXiv: [https://arxiv.org/abs/2204.09297](https://arxiv.org/abs/2204.09297).
 
 ### Abstract
